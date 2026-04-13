@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ZW_Tool.主窗口"
+        Title="ZW_Tool"
+        Width="1200"
+        Height="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid RowDefinitions="Auto,*">
+        <!-- 模块按钮面板 -->
+        <WrapPanel x:Name="ModuleButtonPanel" Grid.Row="0" Margin="10" HorizontalAlignment="Center"/>
+
+        <!-- 模块内容区域 -->
+        <ContentControl x:Name="ModuleContent" Grid.Row="1" Margin="10"/>
+    </Grid>
+</Window>

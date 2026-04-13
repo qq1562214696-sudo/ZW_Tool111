@@ -1,0 +1,84 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:ZW_Tool">
+    <!-- 全局字体大小 -->
+    <Style Selector="Window">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!-- ===========================================
+         UI 统一标准说明
+         ===========================================
+         所有模块按钮应遵循以下标准：
+         - Height: 20 (统一按钮高度)
+         - Padding: 8,-5 (水平内边距8，垂直-5)
+         - Margin: 1 (外边距1)
+         - HorizontalContentAlignment: Center
+         - VerticalContentAlignment: Center
+         - 不设置固定Width，让按钮自适应内容宽度
+         =========================================== -->
+    <Style Selector="Button">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Padding" Value="8,-5"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <!-- 日志面板内按钮样式（覆盖基础样式） -->
+    <!-- <Style Selector="local|日志面板 Button">
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Padding" Value="8,0"/>
+        <Setter Property="Margin" Value="4"/>
+    </Style> -->
+
+    <!-- Expander 样式 -->
+    <Style Selector="Expander">
+        <Setter Property="Margin" Value="0,2,0,4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Expander /template/ ToggleButton#PART_Header">
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Padding" Value="8,0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style Selector="Expander /template/ ContentPresenter#PART_HeaderPresenter">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Expander /template/ ContentPresenter#PART_HeaderPresenter TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Expander[ExpandDirection=Down] /template/ Path">
+        <Setter Property="Margin" Value="4,0,8,0"/>
+    </Style>
+
+    <!-- 文本框样式 -->
+    <Style Selector="TextBox">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="4,1"/>
+    </Style>
+
+    <Style Selector="TextBox /template/ TextPresenter">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+</Styles>

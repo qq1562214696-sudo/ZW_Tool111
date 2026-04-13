@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:ZW_Tool"
+        x:Class="ZW_Tool.文件打印器"
+        Title="文件打印器 - 创宇极"
+        Width="600" Height="500"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 提示文字 -->
+        <TextBlock Grid.Row="0" 
+                   Text="请拖拽文件到下方区域，或点击下方按钮扫描项目文件" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   Margin="20" 
+                   FontSize="14" 
+                   x:Name="HintText"/>
+
+        <!-- 主列表（仅用于拖拽文件，不显示） -->
+        <ListBox Grid.Row="0" 
+                 x:Name="FileListBox" 
+                 IsVisible="False"
+                 KeyDown="OnListBoxKeyDown">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="local:FileItem">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FileName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- 操作按钮 -->
+        <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    Spacing="10" 
+                    Margin="0,10,0,10">
+            <Button Content="复制选中文件内容" 
+                    Click="CopyButton_Click" 
+                    Width="120" Height="30"/>
+            <Button Content="扫描并复制项目文件" 
+                    Click="CopyProjectButton_Click" 
+                    Width="150" Height="30"/>
+        </StackPanel>
+
+        <!-- 状态文本 -->
+        <TextBlock Grid.Row="2" 
+                   x:Name="StatusText" 
+                   Text="就绪" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,10" 
+                   FontSize="12" 
+                   Foreground="#666"/>
+    </Grid>
+</Window>
