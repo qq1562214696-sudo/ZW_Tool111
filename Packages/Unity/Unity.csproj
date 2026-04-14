@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ZW_Tool.csproj" />
+    <ProjectReference Include="..\..\ZW_Tool.csproj" />
   </ItemGroup>
 
 </Project>
