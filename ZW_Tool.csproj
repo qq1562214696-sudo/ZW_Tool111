@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
@@ -9,26 +8,21 @@
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-
-    <!-- 单文件发布核心配置（推荐组合） -->
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-
-    <!-- 打包尽可能多的内容进 EXE，但允许 Assets 文件夹真实存在 -->
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-
-    <!-- 优化设置 -->
     <InvariantGlobalization>true</InvariantGlobalization>
     <PublishReadyToRun>true</PublishReadyToRun>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
+
+    <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
 
-  <!-- NuGet 包引用（强烈建议移除 Costura.Fody，它与 .NET 单文件发布容易冲突） -->
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.12" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
@@ -36,12 +30,10 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12" />
     <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1" />
     <PackageReference Include="SocketIOClient" Version="4.0.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
-    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.10.0" />
   </ItemGroup>
 
-  <!-- 排除不需要编译的 C# 文件 -->
   <ItemGroup>
     <Compile Remove="Assets\**\*.cs" />
     <Compile Remove="项目\Assets\**\*.cs" />
@@ -49,22 +41,21 @@
     <Compile Remove="Blender\**\*.cs" />
     <Compile Remove="Unity\**\*.cs" />
     <Compile Remove="Ps\**\*.cs" />
+    
+    <!-- <Compile Remove="项目\模块\**\*.cs" /> -->
   </ItemGroup>
 
-  <!-- 复制资源文件夹到输出目录（Assets 会先被复制，但 BAT 会覆盖确保真实路径） -->
   <ItemGroup>
-    <None Include="Max\**\*.*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="Blender\**\*.*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="Unity\**\*.*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="Ps\**\*.*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <None Include="Assets\**\*.*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
-
-  <!-- 排除 Avalonia XAML 资源文件 -->
   <ItemGroup>
     <AvaloniaResource Remove="Assets\**\*.axaml;Assets\**\*.xaml;项目\Assets\**\*.axaml;项目\Assets\**\*.xaml" />
     <AvaloniaXaml Remove="Assets\**\*.axaml;Assets\**\*.xaml;项目\Assets\**\*.axaml;项目\Assets\**\*.xaml" />
     <None Remove="Assets\**\*.axaml;Assets\**\*.xaml;项目\Assets\**\*.axaml;项目\Assets\**\*.xaml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="项目\模块\模块.csproj" />
+  </ItemGroup>
+  
 </Project>

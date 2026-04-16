@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Microsoft.Win32;
+using 模块;
 
 namespace ZW_Tool;
 
@@ -14,12 +15,8 @@ public partial class 设置面板 : UserControl, I工具
     public string 作者 => "周维";
     public string 版本 => "1.0";
 
-    // 用于将日志发回主窗口
-    public Action<string>? 主窗口日志 { get; set; }
+    public Action<string>? 日志事件 { get; set; }
     
-    // 添加主窗口引用，用于访问窗口数据
-    public 主窗口? 主窗口引用 { get; set; }
-
     public bool _开启饮水提醒;
     public bool 开启饮水提醒
     {
@@ -29,13 +26,6 @@ public partial class 设置面板 : UserControl, I工具
             if (_开启饮水提醒 != value)
             {
                 _开启饮水提醒 = value;
-                
-                // 如果有主窗口引用，同步到主窗口数据
-                if (主窗口引用 != null)
-                {
-                    主窗口引用._窗口数据.开启饮水提醒 = value;
-                    主窗口引用.保存数据(); // 立即保存更改
-                }
                 
                 OnPropertyChanged(nameof(开启饮水提醒));
             }
@@ -53,13 +43,6 @@ public partial class 设置面板 : UserControl, I工具
             {
                 _开机自启 = value;
                 SetStartupEnabled(value);
-                
-                // 如果有主窗口引用，同步到主窗口数据
-                if (主窗口引用 != null)
-                {
-                    主窗口引用._窗口数据.开机自启 = value;
-                    主窗口引用.保存数据(); // 立即保存更改
-                }
                 
                 OnPropertyChanged(nameof(开机自启));
             }
@@ -109,58 +92,18 @@ public partial class 设置面板 : UserControl, I工具
         return System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? "";
     }
 
-    public void 加载(窗口数据 窗口数据)//待完善，后续看看是开启时加载还是每次切换界面都得加载
+    public void 加载()//待完善，后续看看是开启时加载还是每次切换界面都得加载
     {
-        new 日志($"设置面板加载数据: 开机自启={窗口数据.开机自启}, 开启饮水提醒={窗口数据.开启饮水提醒}, 每日饮水量={窗口数据.每日饮水量}, 饮水提醒间隔={窗口数据.饮水提醒间隔}");
-        
-        // 直接设置字段值，避免触发setter导致的保存操作
-        _开机自启 = 窗口数据.开机自启;
-        _开启饮水提醒 = 窗口数据.开启饮水提醒;
-        
-        // 手动触发属性更改通知，更新UI
-        OnPropertyChanged(nameof(开机自启));
-        OnPropertyChanged(nameof(开启饮水提醒));
-        
-        // 更新界面上的数值控件
-        var targetNumeric = this.FindControl<NumericUpDown>("DrinkTargetNumeric");
-        var intervalNumeric = this.FindControl<NumericUpDown>("ReminderIntervalNumeric");
-        
-        if (targetNumeric != null)
-            targetNumeric.Value = (decimal)窗口数据.每日饮水量;
-        
-        if (intervalNumeric != null)
-            intervalNumeric.Value = (decimal)窗口数据.饮水提醒间隔;
-        
-        UpdateDrinkProgressUI(窗口数据);
-        
-        new 日志($"设置面板加载完成: 开机自启={_开机自启}, 开启饮水提醒={_开启饮水提醒}");
-    }
 
-    private void UpdateDrinkProgressUI(窗口数据 数据)
-    {
-        var progressBar = this.FindControl<ProgressBar>("DrinkProgressBar");
-        var progressText = this.FindControl<TextBlock>("DrinkProgressText");
-
-        if (progressBar != null)
-        {
-            progressBar.Maximum = 数据.每日饮水量;
-            progressBar.Value = 数据.累计饮水量;
-        }
-
-        if (progressText != null)
-        {
-            double percent = 数据.每日饮水量 > 0 ? (数据.累计饮水量 / 数据.每日饮水量) * 100 : 0;
-            progressText.Text = $"{数据.累计饮水量:0} / {数据.每日饮水量:0} ml ({percent:0}%)";
-        }
     }
 
     // 公共方法，用于外部更新饮水进度
-    public void 更新饮水进度(窗口数据 数据)
+    public void 更新饮水进度()
     {
-        UpdateDrinkProgressUI(数据);
+
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public new event PropertyChangedEventHandler? PropertyChanged;
 
     public 设置面板()
     {
@@ -274,132 +217,11 @@ public partial class 设置面板 : UserControl, I工具
 
     public void Initialize()
     {
-        // 初始化模块列表
-        RefreshModules();
 
-        // 添加事件处理
-        if (ModuleListBox != null)
-        {
-            ModuleListBox.SelectionChanged += ModuleListBox_SelectionChanged;
-        }
-        
-        // 从主窗口实例加载数据
-        var mainWindow = 主窗口.Instance;
-        if (mainWindow != null)
-        {
-            加载(mainWindow._窗口数据);
-            主窗口引用 = mainWindow;
-        }
     }
 
     public void Shutdown()
     {
         // 清理逻辑，如果需要
     }
-
-    // 模块管理相关方法
-    private void RefreshModules()
-    {
-        if (ModuleListBox == null)
-            return;
-
-        // 从ModulePackageManager获取模块列表并转换为ModuleListItem
-        var modules = ModulePackageManager.Instance.GetDiscoveredModules()
-            .Select(m => new ModuleListItem
-            {
-                Name = m.Name,
-                DisplayName = m.DisplayName,
-                Version = m.Version,
-                Author = m.Author,
-                Enabled = m.Enabled,
-                Description = m.Description
-            })
-            .ToList();
-
-        ModuleListBox.ItemsSource = modules;
-    }
-
-    private void RefreshModules_Click(object? sender, RoutedEventArgs e)
-    {
-        RefreshModules();
-        UpdateModuleInfo("模块列表已刷新");
-    }
-
-    private void InstallModule_Click(object? sender, RoutedEventArgs e)
-    {
-        // TODO: 实现模块安装对话框
-        UpdateModuleInfo("模块安装功能开发中...");
-    }
-
-    private void UninstallModule_Click(object? sender, RoutedEventArgs e)
-    {
-        if (ModuleListBox == null)
-        {
-            UpdateModuleInfo("模块列表未初始化");
-            return;
-        }
-
-        var selectedItem = ModuleListBox.SelectedItem as ModuleListItem;
-        if (selectedItem != null)
-        {
-            try
-            {
-                // 禁用指定的模块
-                ModulePackageManager.Instance.SetModuleEnabled(selectedItem.Name, false);
-                
-                // 重新加载所有模块
-                ModulePackageManager.Instance.ReloadAllModules();
-                
-                RefreshModules();
-                UpdateModuleInfo($"模块 '{selectedItem.DisplayName}' 已禁用");
-            }
-            catch (Exception ex)
-            {
-                UpdateModuleInfo($"卸载模块 '{selectedItem.DisplayName}' 失败: {ex.Message}");
-            }
-        }
-        else
-        {
-            UpdateModuleInfo("请先选择要卸载的模块");
-        }
-    }
-
-    private void UpdateModuleInfo(string info)
-    {
-        if (ModuleInfoText != null)
-        {
-            ModuleInfoText.Text = info;
-        }
-    }
-
-    // 当模块选择改变时更新信息
-    private void ModuleListBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (ModuleListBox == null)
-        {
-            UpdateModuleInfo("模块列表未初始化");
-            return;
-        }
-
-        var selectedItem = ModuleListBox.SelectedItem as ModuleListItem;
-        if (selectedItem != null)
-        {
-            UpdateModuleInfo($"{selectedItem.DisplayName} v{selectedItem.Version}\n作者: {selectedItem.Author}\n{selectedItem.Description}");
-        }
-        else
-        {
-            UpdateModuleInfo("选择模块查看详细信息");
-        }
-    }
-}
-
-// 模块列表项类
-public class ModuleListItem
-{
-    public string Name { get; set; } = "";
-    public string DisplayName { get; set; } = "";
-    public string Version { get; set; } = "";
-    public string Author { get; set; } = "";
-    public bool Enabled { get; set; }
-    public string Description { get; set; } = "";
 }

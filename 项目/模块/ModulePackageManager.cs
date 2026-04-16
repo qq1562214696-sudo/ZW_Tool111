@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ZW_Tool;
+namespace 模块;
 
 /// <summary>
-/// 模块包管理器 - 使用PluginLoader加载Assets目录中的插件
-/// 现在完全遵循新模块系统架构
+/// 模块包管理器 - 独立的模块加载系统
 /// </summary>
 public class ModulePackageManager
 {
@@ -20,7 +19,7 @@ public class ModulePackageManager
     private ModulePackageManager()
     {
         _pluginLoader = new PluginLoader("Assets");
-        _moduleDiscovery = new ModuleDiscovery(); // 现在会扫描Assets目录而不是Packages目录
+        _moduleDiscovery = new ModuleDiscovery();
     }
 
     /// <summary>

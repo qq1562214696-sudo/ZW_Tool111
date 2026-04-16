@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Loader;
 
-namespace ZW_Tool;
+namespace 模块;
 
 /// <summary>
 /// 动态加载插件DLL的管理器
@@ -15,16 +14,16 @@ public class PluginLoader
     private readonly string _pluginsPath;
     private readonly Dictionary<string, (AssemblyLoadContext Context, I工具 Instance)> _loadedPlugins = new();
 
-        public PluginLoader(string assetsPath = "Assets")
+    public PluginLoader(string assetsPath = "Assets")
+    {
+        _pluginsPath = Path.Combine(AppContext.BaseDirectory, assetsPath);
+        
+        // 创建Assets文件夹如果不存在
+        if (!Directory.Exists(_pluginsPath))
         {
-            _pluginsPath = Path.Combine(AppContext.BaseDirectory, assetsPath);
-            
-            // 创建Assets文件夹如果不存在
-            if (!Directory.Exists(_pluginsPath))
-            {
-                Directory.CreateDirectory(_pluginsPath);
-            }
+            Directory.CreateDirectory(_pluginsPath);
         }
+    }
 
     /// <summary>
     /// 加载所有Assets文件夹及其子文件夹中的DLL

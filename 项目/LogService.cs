@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using Avalonia.Threading;
 
-namespace ZW_Tool;
+namespace ZW_Tool.核心;
 
 public class 日志数据
 {

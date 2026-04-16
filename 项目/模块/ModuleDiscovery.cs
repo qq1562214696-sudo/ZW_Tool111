@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace ZW_Tool;
+namespace 模块;
 
 /// <summary>
 /// 模块自动发现引擎 - 无需配置，自动扫描Assets目录的所有模块
@@ -34,7 +33,7 @@ public class ModuleDiscovery
 
         if (!Directory.Exists(_assetsPath))
         {
-            new 日志($"[警告] Assets目录不存在: {_assetsPath}");
+            Console.WriteLine($"[警告] Assets目录不存在: {_assetsPath}");
             return _discoveredModules;
         }
 
@@ -48,16 +47,16 @@ public class ModuleDiscovery
                 if (moduleInfo != null && moduleInfo.Enabled)
                 {
                     _discoveredModules.Add(moduleInfo);
-                    new 日志($"[发现] 模块: {moduleInfo.DisplayName} (路径: {moduleInfo.ModulePath})");
+                    Console.WriteLine($"[发现] 模块: {moduleInfo.DisplayName} (路径: {moduleInfo.ModulePath})");
                 }
             }
 
-            new 日志($"[信息] 自动发现了 {_discoveredModules.Count} 个模块");
+            Console.WriteLine($"[信息] 自动发现了 {_discoveredModules.Count} 个模块");
             return _discoveredModules;
         }
         catch (Exception ex)
         {
-            new 日志($"[错误] 扫描Assets目录时出错: {ex.Message}");
+            Console.WriteLine($"[错误] 扫描Assets目录时出错: {ex.Message}");
             return _discoveredModules;
         }
     }
@@ -77,7 +76,7 @@ public class ModuleDiscovery
         }
         catch (Exception ex)
         {
-            new 日志($"[错误] 发现模块失败 ({modulePath}): {ex.Message}");
+            Console.WriteLine($"[错误] 发现模块失败 ({modulePath}): {ex.Message}");
             return null;
         }
     }
@@ -104,7 +103,7 @@ public class ModuleDiscovery
 
         if (csFiles.Length == 0 && axamlFiles.Length == 0)
         {
-            new 日志($"[警告] 模块 {moduleName} 没有找到有效的源码或AXAML文件，将跳过加载");
+            Console.WriteLine($"[警告] 模块 {moduleName} 没有找到有效的源码或AXAML文件，将跳过加载");
             return moduleInfo;
         }
 
@@ -210,7 +209,7 @@ public class ModuleDiscovery
         }
         catch (Exception ex)
         {
-            new 日志($"[警告] 从源码 {filePath} 提取模块信息失败: {ex.Message}");
+            Console.WriteLine($"[警告] 从源码 {filePath} 提取模块信息失败: {ex.Message}");
         }
     }
 
