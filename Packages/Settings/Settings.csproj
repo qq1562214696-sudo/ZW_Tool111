@@ -1,12 +1,11 @@
-﻿﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <AssemblyName>Settings</AssemblyName>
-    <RootNamespace>ZW_Tool.Settings</RootNamespace>
+    <RootNamespace>ZW_Tool</RootNamespace>
     <Nullable>enable</Nullable>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,11 +14,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="**\*.axaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\项目\模块\模块.csproj" />
   </ItemGroup>
+
+  <!-- <ItemGroup>
+    <EmbeddedResource Include="**\*.axaml" />
+  </ItemGroup> -->
+
+  <!-- 构建后自动复制到 Assets/Settings 文件夹 -->
+  <Target Name="CopyToAssetsAfterBuild" AfterTargets="Build">
+    <ItemGroup>
+      <OutputFiles Include="$(TargetDir)Settings.dll" />
+      <OutputFiles Include="$(TargetDir)Settings.pdb" Condition="Exists('$(TargetDir)Settings.pdb')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(OutputFiles)" 
+          DestinationFolder="$(MSBuildProjectDirectory)\..\..\..\Assets\Settings\" 
+          OverwriteReadOnlyFiles="true" />
+    <Message Text="=== 已自动复制 Settings.dll 到 Assets\Settings\ ===" Importance="high" />
+  </Target>
 
 </Project>
