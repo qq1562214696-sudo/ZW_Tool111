@@ -26,8 +26,8 @@
           "net10.0-windows7.0": {
             "targetAlias": "net10.0-windows",
             "projectReferences": {
-              "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\项目\\模块\\模块.csproj": {
-                "projectPath": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\项目\\模块\\模块.csproj"
+              "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\ZW_Tool.csproj": {
+                "projectPath": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\ZW_Tool.csproj"
               }
             }
           }
@@ -351,14 +351,14 @@
         }
       }
     },
-    "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\项目\\模块\\模块.csproj": {
+    "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\ZW_Tool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\项目\\模块\\模块.csproj",
-        "projectName": "模块",
-        "projectPath": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\项目\\模块\\模块.csproj",
+        "projectUniqueName": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\ZW_Tool.csproj",
+        "projectName": "ZW_Tool",
+        "projectPath": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\ZW_Tool.csproj",
         "packagesPath": "C:\\Users\\s\\.nuget\\packages\\",
-        "outputPath": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\项目\\模块\\obj\\",
+        "outputPath": "D:\\360MoveData\\Users\\s\\Desktop\\ZW_Tool\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\s\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -407,6 +407,10 @@
               "target": "Package",
               "version": "[11.3.12, )"
             },
+            "MessageBox.Avalonia": {
+              "target": "Package",
+              "version": "[3.3.1.1, )"
+            },
             "Microsoft.CodeAnalysis.CSharp": {
               "target": "Package",
               "version": "[4.10.0, )"
@@ -414,6 +418,16 @@
             "Microsoft.CodeAnalysis.Common": {
               "target": "Package",
               "version": "[4.10.0, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.2, )",
+              "autoReferenced": true
+            },
+            "SocketIOClient": {
+              "target": "Package",
+              "version": "[4.0.1, )"
             }
           },
           "imports": [
@@ -427,9 +441,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[10.0.2, 10.0.2]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
@@ -438,6 +473,8 @@
             "Microsoft.VisualBasic": "(,10.4.32767]",
             "Microsoft.Win32.Primitives": "(,4.3.32767]",
             "Microsoft.Win32.Registry": "(,5.0.32767]",
+            "Microsoft.Win32.Registry.AccessControl": "(,10.0.32767]",
+            "Microsoft.Win32.SystemEvents": "(,10.0.32767]",
             "runtime.any.System.Collections": "(,4.3.32767]",
             "runtime.any.System.Diagnostics.Tools": "(,4.3.32767]",
             "runtime.any.System.Diagnostics.Tracing": "(,4.3.32767]",
@@ -578,6 +615,7 @@
             "runtime.win8-arm.runtime.native.System.IO.Compression": "(,4.3.32767]",
             "System.AppContext": "(,4.3.32767]",
             "System.Buffers": "(,5.0.32767]",
+            "System.CodeDom": "(,10.0.32767]",
             "System.Collections": "(,4.3.32767]",
             "System.Collections.Concurrent": "(,4.3.32767]",
             "System.Collections.Immutable": "(,10.0.32767]",
@@ -588,22 +626,28 @@
             "System.ComponentModel.EventBasedAsync": "(,4.3.32767]",
             "System.ComponentModel.Primitives": "(,4.3.32767]",
             "System.ComponentModel.TypeConverter": "(,4.3.32767]",
+            "System.Configuration.ConfigurationManager": "(,10.0.32767]",
             "System.Console": "(,4.3.32767]",
             "System.Data.Common": "(,4.3.32767]",
             "System.Data.DataSetExtensions": "(,4.4.32767]",
             "System.Diagnostics.Contracts": "(,4.3.32767]",
             "System.Diagnostics.Debug": "(,4.3.32767]",
             "System.Diagnostics.DiagnosticSource": "(,10.0.32767]",
+            "System.Diagnostics.EventLog": "(,10.0.32767]",
             "System.Diagnostics.FileVersionInfo": "(,4.3.32767]",
+            "System.Diagnostics.PerformanceCounter": "(,10.0.32767]",
             "System.Diagnostics.Process": "(,4.3.32767]",
             "System.Diagnostics.StackTrace": "(,4.3.32767]",
             "System.Diagnostics.TextWriterTraceListener": "(,4.3.32767]",
             "System.Diagnostics.Tools": "(,4.3.32767]",
             "System.Diagnostics.TraceSource": "(,4.3.32767]",
             "System.Diagnostics.Tracing": "(,4.3.32767]",
+            "System.DirectoryServices": "(,10.0.32767]",
+            "System.Drawing.Common": "(,10.0.32767]",
             "System.Drawing.Primitives": "(,4.3.32767]",
             "System.Dynamic.Runtime": "(,4.3.32767]",
             "System.Formats.Asn1": "(,10.0.32767]",
+            "System.Formats.Nrbf": "(,10.0.32767]",
             "System.Formats.Tar": "(,10.0.32767]",
             "System.Globalization": "(,4.3.32767]",
             "System.Globalization.Calendars": "(,4.3.32767]",
@@ -618,6 +662,7 @@
             "System.IO.FileSystem.Watcher": "(,4.3.32767]",
             "System.IO.IsolatedStorage": "(,4.3.32767]",
             "System.IO.MemoryMappedFiles": "(,4.3.32767]",
+            "System.IO.Packaging": "(,10.0.32767]",
             "System.IO.Pipelines": "(,10.0.32767]",
             "System.IO.Pipes": "(,4.3.32767]",
             "System.IO.Pipes.AccessControl": "(,5.0.32767]",
@@ -654,6 +699,7 @@
             "System.Reflection.Metadata": "(,10.0.32767]",
             "System.Reflection.Primitives": "(,4.3.32767]",
             "System.Reflection.TypeExtensions": "(,4.3.32767]",
+            "System.Resources.Extensions": "(,10.0.32767]",
             "System.Resources.Reader": "(,4.3.32767]",
             "System.Resources.ResourceManager": "(,4.3.32767]",
             "System.Resources.Writer": "(,4.3.32767]",
@@ -677,8 +723,12 @@
             "System.Security.Cryptography.Csp": "(,4.3.32767]",
             "System.Security.Cryptography.Encoding": "(,4.3.32767]",
             "System.Security.Cryptography.OpenSsl": "(,5.0.32767]",
+            "System.Security.Cryptography.Pkcs": "(,10.0.32767]",
             "System.Security.Cryptography.Primitives": "(,4.3.32767]",
+            "System.Security.Cryptography.ProtectedData": "(,10.0.32767]",
             "System.Security.Cryptography.X509Certificates": "(,4.3.32767]",
+            "System.Security.Cryptography.Xml": "(,10.0.32767]",
+            "System.Security.Permissions": "(,10.0.32767]",
             "System.Security.Principal": "(,4.3.32767]",
             "System.Security.Principal.Windows": "(,5.0.32767]",
             "System.Security.SecureString": "(,4.3.32767]",
@@ -700,6 +750,7 @@
             "System.Threading.ThreadPool": "(,4.3.32767]",
             "System.Threading.Timer": "(,4.3.32767]",
             "System.ValueTuple": "(,4.5.32767]",
+            "System.Windows.Extensions": "(,10.0.32767]",
             "System.Xml.ReaderWriter": "(,4.3.32767]",
             "System.Xml.XDocument": "(,4.3.32767]",
             "System.Xml.XmlDocument": "(,4.3.32767]",
@@ -707,6 +758,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

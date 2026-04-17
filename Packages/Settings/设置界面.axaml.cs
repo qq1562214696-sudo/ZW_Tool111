@@ -6,7 +6,8 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Win32;
 using Avalonia.Threading;
 using System.Threading.Tasks;
-using 模块;
+using ZW_Tool.核心;
+
 
 namespace ZW_Tool;
 

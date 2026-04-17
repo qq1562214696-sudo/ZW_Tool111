@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ZW_Tool.小岛植物">
+    <StackPanel Margin="0,2,0,0" Spacing="2">
+        <TextBox x:Name="Island_MaxPathInput"
+                 Watermark="在此粘贴小岛植物 Max 主文件名"
+                 Height="20" Padding="4,1"/>
+        <TextBox x:Name="Island_UnityPathInput"
+                 Watermark="在此粘贴小岛植物 Unity 主文件名"
+                 Height="20" Padding="4,1"/>
+
+        <Expander Header="3ds Max 工具（小岛植物专用）" IsExpanded="True">
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto" Margin="0,2,0,0">
+                <Button Grid.Row="0" Grid.Column="0"
+                        Content="规范模型命名（待实现）" Click="Max脚本"/>
+                <!-- <Button Grid.Row="0" Grid.Column="1"
+                        Content="导出当前为FBX（待实现）" Click="Max脚本"/> -->
+
+            </Grid>
+        </Expander>
+    </StackPanel>
+</UserControl>

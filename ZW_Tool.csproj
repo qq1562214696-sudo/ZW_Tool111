@@ -41,8 +41,6 @@
     <Compile Remove="Blender\**\*.cs" />
     <Compile Remove="Unity\**\*.cs" />
     <Compile Remove="Ps\**\*.cs" />
-    
-    <!-- <Compile Remove="项目\模块\**\*.cs" /> -->
   </ItemGroup>
 
   <ItemGroup>
@@ -52,10 +50,6 @@
     <AvaloniaResource Remove="Assets\**\*.axaml;Assets\**\*.xaml;项目\Assets\**\*.axaml;项目\Assets\**\*.xaml" />
     <AvaloniaXaml Remove="Assets\**\*.axaml;Assets\**\*.xaml;项目\Assets\**\*.axaml;项目\Assets\**\*.xaml" />
     <None Remove="Assets\**\*.axaml;Assets\**\*.xaml;项目\Assets\**\*.axaml;项目\Assets\**\*.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="项目\模块\模块.csproj" />
   </ItemGroup>
   
 </Project>

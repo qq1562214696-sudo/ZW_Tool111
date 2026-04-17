@@ -1,0 +1,9 @@
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\bin\Release\net10.0-windows\IslandPlant.dll
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\IslandPlant.csproj.AssemblyReference.cache
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\Avalonia\Resources.Inputs.cache
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\Avalonia\resources
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\IslandPlant.GeneratedMSBuildEditorConfig.editorconfig
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\IslandPlant.csproj.CoreCompileInputs.cache
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\IslandPlant.dll
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\refint\IslandPlant.dll
+D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\IslandPlant\obj\Release\net10.0-windows\ref\IslandPlant.dll

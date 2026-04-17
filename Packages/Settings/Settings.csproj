@@ -6,6 +6,16 @@
     <AssemblyName>Settings</AssemblyName>
     <RootNamespace>ZW_Tool</RootNamespace>
     <Nullable>enable</Nullable>
+
+    <!-- 只生成 .dll，禁止生成 .pdb / .deps.json / .runtimeconfig.json -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+
+    <!-- 禁用自动生成 AssemblyInfo 和 TargetFramework 特性，防止与主项目冲突 -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,21 +24,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\项目\模块\模块.csproj" />
+    <ProjectReference Include="..\..\ZW_Tool.csproj">
+      <Private>false</Private>
+    </ProjectReference>
   </ItemGroup>
 
-  <!-- <ItemGroup>
-    <EmbeddedResource Include="**\*.axaml" />
-  </ItemGroup> -->
-
-  <!-- 构建后自动复制到 Assets/Settings 文件夹 -->
+  <!-- 构建后自动复制 Settings.dll 到 Assets/Settings/，且只复制 .dll -->
   <Target Name="CopyToAssetsAfterBuild" AfterTargets="Build">
     <ItemGroup>
       <OutputFiles Include="$(TargetDir)Settings.dll" />
-      <OutputFiles Include="$(TargetDir)Settings.pdb" Condition="Exists('$(TargetDir)Settings.pdb')" />
     </ItemGroup>
-    <Copy SourceFiles="@(OutputFiles)" 
-          DestinationFolder="$(MSBuildProjectDirectory)\..\..\..\Assets\Settings\" 
+    <Copy SourceFiles="@(OutputFiles)"
+          DestinationFolder="$(MSBuildProjectDirectory)\..\..\..\Assets\Settings\"
           OverwriteReadOnlyFiles="true" />
     <Message Text="=== 已自动复制 Settings.dll 到 Assets\Settings\ ===" Importance="high" />
   </Target>

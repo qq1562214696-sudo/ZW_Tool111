@@ -1,16 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using 模块;
+using ZW_Tool.核心;
+
 
 namespace ZW_Tool
 {
-    public class DrinkReminderModule : I工具
+    public class DrinkReminderModule
     {
-        public string 工具命名 => "饮水提醒";
-        public string 作者 => "周维";
-        public string 版本 => "1.0";
-
         public UserControl? 获取工具面板() => null;
 
         public void Initialize()
