@@ -40,7 +40,7 @@ namespace ZW_Tool
             }
             catch (Exception ex)
             {
-                new 日志($"自动加载 Unity 路径失败：{ex.Message}");
+                EventAggregator.PublishLog($"自动加载 Unity 路径失败：{ex.Message}");
             }
         }
     }

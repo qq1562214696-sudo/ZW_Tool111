@@ -2,8 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:ZW_Tool"
         x:Class="ZW_Tool.文件打印器"
+        x:DataType="local:文件打印器"
         Title="文件打印器 - 创宇极"
-        Width="600" Height="500"
+        Width="700" Height="550"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -12,24 +13,39 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- 提示文字 -->
+        <!-- 提示文字（当列表为空时显示） -->
         <TextBlock Grid.Row="0" 
-                   Text="请拖拽文件到下方区域，或点击下方按钮扫描项目文件" 
+                   Text="拖拽文件或文件夹到下方列表区域"
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
-                   Margin="20" 
                    FontSize="14" 
-                   x:Name="HintText"/>
+                   Foreground="Gray"
+                   IsVisible="{Binding Items.Count, Converter={x:Static local:ZeroToVisibleConverter.Instance}}"/>
 
-        <!-- 主列表（仅用于拖拽文件，不显示） -->
+        <!-- 文件列表（修复：移除 DataTemplate 中的 x:DataType，避免类型冲突） -->
         <ListBox Grid.Row="0" 
                  x:Name="FileListBox" 
-                 IsVisible="False"
-                 KeyDown="OnListBoxKeyDown">
+                 ItemsSource="{Binding Items}"
+                 SelectedItem="{Binding SelectedItem}"
+                 KeyDown="OnListBoxKeyDown"
+                 Background="Transparent"
+                 DragDrop.AllowDrop="True">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="删除" Click="RemoveMenuItem_Click"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="local:FileItem">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding FileName}" />
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <TextBlock Text="{Binding DisplayIndex}" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding FullPath}" 
+                                   Margin="10,0,0,0" 
+                                   Foreground="Gray" 
+                                   FontStyle="Italic"
+                                   TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -40,21 +56,24 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center" 
                     Spacing="10" 
-                    Margin="0,10,0,10">
-            <Button Content="复制选中文件内容" 
-                    Click="CopyButton_Click" 
-                    Width="120" Height="30"/>
-            <Button Content="扫描并复制项目文件" 
+                    Margin="0,10">
+            <Button Content="复制列表到剪贴板" 
+                    Click="CopyListToClipboard_Click" 
+                    Width="140" Height="32"/>
+            <Button Content="扫描项目并生成全文件" 
                     Click="CopyProjectButton_Click" 
-                    Width="150" Height="30"/>
+                    Width="160" Height="32"/>
+            <Button Content="清空列表" 
+                    Click="ClearList_Click" 
+                    Width="100" Height="32"/>
         </StackPanel>
 
-        <!-- 状态文本 -->
+        <!-- 状态栏 -->
         <TextBlock Grid.Row="2" 
                    x:Name="StatusText" 
                    Text="就绪" 
                    HorizontalAlignment="Center" 
-                   Margin="0,0,0,10" 
+                   Margin="0,10" 
                    FontSize="12" 
                    Foreground="#666"/>
     </Grid>

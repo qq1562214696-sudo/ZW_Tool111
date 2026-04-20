@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using System.Text;
 using Avalonia.Interactivity;
+using ZW_Tool.核心;
 
 namespace ZW_Tool;
 
@@ -43,7 +44,7 @@ public partial class 日志弹窗 : Window
         if (日志面板.实例 != null)
         {
             日志面板.实例.日志列表.Clear();
-            new 日志("日志已清空（弹窗操作）");
+            EventAggregator.PublishLog("日志已清空（弹窗操作）");
         }
     }
 
@@ -53,7 +54,7 @@ public partial class 日志弹窗 : Window
         var 日志列表 = 日志面板.实例?.日志列表;
         if (日志列表 == null || 日志列表.Count == 0)
         {
-            new 日志("没有可复制的日志");
+            EventAggregator.PublishLog("没有可复制的日志");
             return;
         }
 
@@ -67,11 +68,11 @@ public partial class 日志弹窗 : Window
         if (clipboard != null)
         {
             await clipboard.SetTextAsync(sb.ToString());
-            new 日志($"已复制 {日志列表.Count} 条日志到剪贴板（弹窗操作）");
+            EventAggregator.PublishLog($"已复制 {日志列表.Count} 条日志到剪贴板（弹窗操作）");
         }
         else
         {
-            new 日志("无法访问剪贴板");
+            EventAggregator.PublishLog("无法访问剪贴板");
         }
     }
 

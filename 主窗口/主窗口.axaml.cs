@@ -33,7 +33,7 @@ namespace ZW_Tool.核心
             // 手动查找 ModuleContent（以防编译器未生成）
             ModuleContent = this.FindControl<ContentControl>("ModuleContent");
             if (ModuleContent == null)
-            new 日志("[警告] ModuleContent 控件未找到！");
+            EventAggregator.PublishLog("[警告] ModuleContent 控件未找到！");
 
             // 确保Assets目录结构存在
             EnsureAssetsDirectories();
@@ -81,7 +81,7 @@ namespace ZW_Tool.核心
                 }
                 catch (Exception ex)
                 {
-                    new 日志($"[警告] 调用饮水提醒初始检查失败: {ex.Message}");
+                    EventAggregator.PublishLog($"[警告] 调用饮水提醒初始检查失败: {ex.Message}");
                 }
             }
 
@@ -142,7 +142,7 @@ namespace ZW_Tool.核心
             }
             catch (Exception ex)
             {
-                new 日志($"自动加载 Unity 路径失败：{ex.Message}");
+                EventAggregator.PublishLog($"自动加载 Unity 路径失败：{ex.Message}");
             }
         }
 

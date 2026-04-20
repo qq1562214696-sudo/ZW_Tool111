@@ -1,46 +1,65 @@
 using System;
 using System.Collections.ObjectModel;
 using Avalonia.Threading;
+using ZW_Tool.核心;
 
-namespace ZW_Tool;
-
-public class 日志数据
+namespace ZW_Tool
 {
-    public required string 内容 { get; set; }
-    public string 颜色 { get; set; } = "Black";
-}
-
-public static class 日志服务
-{
-    public static ObservableCollection<日志数据> 日志列表 { get; } = new ObservableCollection<日志数据>();
-
-    public static void Add(string 消息, string 颜色 = "Black")
+    /// <summary>
+    /// 日志数据模型
+    /// </summary>
+    public class 日志数据
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            日志列表.Add(new 日志数据 { 内容 = $"[{DateTime.Now:mm:ss}] {消息}", 颜色 = 颜色 });
-
-            // 自动清理，避免无限增长
-            if (日志列表.Count > 2000)
-            {
-                while (日志列表.Count > 1800)
-                    日志列表.RemoveAt(0);
-            }
-        });
+        public required string 内容 { get; set; }
+        public string 颜色 { get; set; } = "Black";
     }
-}
 
-public class 日志
-{
-    public 日志(string 消息) => 日志服务.Add(消息, "Black");
-}
+    /// <summary>
+    /// 静态日志服务，管理日志集合并订阅全局日志事件
+    /// </summary>
+    public static class 日志服务
+    {
+        public static ObservableCollection<日志数据> 日志列表 { get; } = new();
 
-public class 提示
-{
-    public 提示(string 消息) => 日志服务.Add($"提示:{消息}", "Yellow");
-}
+        // 静态构造函数，确保在程序启动时立即订阅事件
+        static 日志服务()
+        {
+            // 订阅全局日志事件（使用弱引用或直接订阅，注意避免重复订阅）
+            EventAggregator.LogPublished += OnLogPublished;
+        }
 
-public class 报错
-{
-    public 报错(string 消息) => 日志服务.Add($"错误:{消息}", "Red");
+        private static void OnLogPublished(object? sender, LogEventArgs e)
+        {
+            string color = e.Level switch
+            {
+                LogLevel.Warning => "Orange",
+                LogLevel.Error => "Red",
+                _ => "Black"
+            };
+            Add(e.Message, color);
+        }
+
+        public static void Add(string 消息, string 颜色 = "Black")
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                日志列表.Add(new 日志数据
+                {
+                    内容 = $"[{DateTime.Now:HH:mm:ss}] {消息}",
+                    颜色 = 颜色
+                });
+
+                // 自动清理，保持数量在合理范围
+                while (日志列表.Count > 2000)
+                {
+                    日志列表.RemoveAt(0);
+                }
+            });
+        }
+
+        public static void Clear()
+        {
+            Dispatcher.UIThread.Post(() => 日志列表.Clear());
+        }
+    }
 }

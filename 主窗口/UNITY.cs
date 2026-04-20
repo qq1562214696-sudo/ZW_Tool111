@@ -37,7 +37,7 @@ namespace ZW_Tool.核心
                 await stream.WriteAsync(payload);
                 await stream.FlushAsync();
 
-                new 日志($"[TCP] 已发送命令: {command} (端口: {port})");
+                EventAggregator.PublishLog($"[TCP] 已发送命令: {command} (端口: {port})");
 
                 // 读取响应（长度前缀）
                 byte[] lenBuf = new byte[4];
@@ -52,14 +52,14 @@ namespace ZW_Tool.核心
                     var response = System.Text.Json.JsonSerializer.Deserialize<ZW_Tool.Pipe.PipeResponse>(respJson);
 
                     if (response?.Success == true)
-                        new 日志($"✅ Unity TCP 返回成功: {response.Message}");
+                        EventAggregator.PublishLog($"✅ Unity TCP 返回成功: {response.Message}");
                     else
-                        new 报错($"Unity 执行失败: {response?.Message}");
+                        EventAggregator.PublishLog($"Unity 执行失败: {response?.Message}");
                 }
             }
             catch (Exception ex)
             {
-                new 报错($"TCP 通信失败: {ex.Message}");
+                EventAggregator.PublishLog($"TCP 通信失败: {ex.Message}");
             }
         }
 
@@ -70,7 +70,7 @@ namespace ZW_Tool.核心
             string tag = btn.Tag?.ToString()?.Trim() ?? "";
             if (string.IsNullOrEmpty(tag))
             {
-                new 报错("按钮 Tag 为空，无法解析调用信息");
+                EventAggregator.PublishLog("按钮 Tag 为空，无法解析调用信息");
                 return;
             }
 
@@ -84,12 +84,12 @@ namespace ZW_Tool.核心
 
                 if (string.IsNullOrEmpty(callString))
                 {
-                    new 报错("调用字符串为空");
+                    EventAggregator.PublishLog("调用字符串为空");
                     return;
                 }
 
                 await CallUnityViaTcpAsync("InvokeMethod", callString, port);
-                new 日志($"[TCP调用] {callString} (端口: {port})");
+                EventAggregator.PublishLog($"[TCP调用] {callString} (端口: {port})");
                 return;
             }
 
@@ -97,7 +97,7 @@ namespace ZW_Tool.核心
             int colonIndex = tag.IndexOf(':');
             if (colonIndex == -1)
             {
-                new 报错("按钮 Tag 格式错误，应为 \"管道名:调用字符串\" 或 \"tcp端口:调用字符串\"");
+                EventAggregator.PublishLog("按钮 Tag 格式错误，应为 \"管道名:调用字符串\" 或 \"tcp端口:调用字符串\"");
                 return;
             }
 
@@ -106,7 +106,7 @@ namespace ZW_Tool.核心
 
             if (string.IsNullOrEmpty(callString2))
             {
-                new 报错("调用字符串为空");
+                EventAggregator.PublishLog("调用字符串为空");
                 return;
             }
 
@@ -120,17 +120,17 @@ namespace ZW_Tool.核心
             {
                 using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
 
-                new 日志($"正在连接 Unity Pipe [{pipeName}]...");
+                EventAggregator.PublishLog($"正在连接 Unity Pipe [{pipeName}]...");
 
                 var connectTask = client.ConnectAsync(5000);
                 if (await Task.WhenAny(connectTask, Task.Delay(5000)) != connectTask)
                 {
-                    new 报错($"连接超时（5秒）。请确认 Unity 编辑器已运行，且管道名为 {pipeName}。");
+                    EventAggregator.PublishLog($"连接超时（5秒）。请确认 Unity 编辑器已运行，且管道名为 {pipeName}。");
                     return;
                 }
 
                 await connectTask;
-                new 日志($"已成功连接到 Unity Pipe [{pipeName}]");
+                EventAggregator.PublishLog($"已成功连接到 Unity Pipe [{pipeName}]");
 
                 // 序列化选项：必须包含字段
                 var options = new System.Text.Json.JsonSerializerOptions
@@ -153,7 +153,7 @@ namespace ZW_Tool.核心
                 await client.WriteAsync(payload);
                 await client.FlushAsync();
 
-                new 日志($"已发送命令: {command}");
+                EventAggregator.PublishLog($"已发送命令: {command}");
 
                 // 读取响应（必须等待完整读取）
                 byte[] lenBuf = new byte[4];
@@ -171,13 +171,13 @@ namespace ZW_Tool.核心
                     new System.Text.Json.JsonSerializerOptions { IncludeFields = true });
 
                 if (response?.Success == true)
-                    new 日志($"✅ Unity 返回成功: {response.Message}");
+                    EventAggregator.PublishLog($"✅ Unity 返回成功: {response.Message}");
                 else
-                    new 报错($"Unity 执行失败: {(response?.Message ?? "无响应")}");
+                    EventAggregator.PublishLog($"Unity 执行失败: {(response?.Message ?? "无响应")}");
             }
             catch (Exception ex)
             {
-                new 报错($"通信失败: {ex.Message}");
+                EventAggregator.PublishLog($"通信失败: {ex.Message}");
             }
         }
 

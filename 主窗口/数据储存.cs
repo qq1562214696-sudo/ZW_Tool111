@@ -56,7 +56,7 @@ public partial class 主窗口
         }
         catch (Exception ex)
         {
-          new 日志($"窗口保存布局失败：{ex.Message}");
+          EventAggregator.PublishLog($"窗口保存布局失败：{ex.Message}");
         }
     }
 
@@ -72,7 +72,7 @@ public partial class 主窗口
         }
         catch (Exception ex)
         {
-          new 日志($"加载数据失败：{ex.Message}");
+          EventAggregator.PublishLog($"加载数据失败：{ex.Message}");
             _窗口数据 = new 窗口数据();
         }
     }

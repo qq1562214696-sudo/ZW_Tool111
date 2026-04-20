@@ -1,6 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:ZW_Tool"
              x:Class="ZW_Tool.日志面板"
              x:CompileBindings="False">
 
@@ -21,7 +20,7 @@
                      BorderThickness="0"
                      SelectionMode="Multiple,Toggle">
                 <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="local:日志数据">
+                    <DataTemplate>
                         <TextBlock Text="{Binding 内容}"
                                    Foreground="{Binding 颜色}"
                                    TextWrapping="Wrap"
@@ -31,8 +30,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </ScrollViewer>
-
-        <!-- <TextBlock Text="{Binding Message}" -->
 
         <!-- 右侧操作按钮 -->
         <StackPanel Grid.Column="1"
@@ -46,7 +43,7 @@
                     Click="复制全部日志_Click"/>
             <Button Content="打开日志弹窗"
                     Click="打开日志弹窗_Click"
-                    Width="70"/>   <!-- 新增按钮 -->
+                    Width="70"/>
         </StackPanel>
     </Grid>
 </UserControl>

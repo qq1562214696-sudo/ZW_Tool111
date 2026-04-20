@@ -36,29 +36,26 @@ public partial class QF : UserControl, I工具
         }
         catch
         {
-            // 如果XAML加载失败，创建基本UI
             Content = new TextBlock { Text = "QF工具 - XAML加载失败" };
         }
     }
 
     public void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-    //需要好好重构一下---------------------------
     public async void QF_初始化按钮_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        // 使用FindControl查找控件
         var unityPathInput = this.FindControl<TextBox>("QF_UnityPathInput");
         string 输入原始 = unityPathInput?.Text?.Trim() ?? "";
         string 新路径 = 输入原始.Trim().Replace("/", "\\").TrimEnd('\\');
 
         if (string.IsNullOrWhiteSpace(新路径))
         {
-            new 报错("请输入 Unity Assets 路径！");
+            EventAggregator.PublishLog("请输入 Unity Assets 路径！", LogLevel.Warning);
             return;
         }
         if (!Directory.Exists(新路径))
         {
-            new 报错($"路径不存在或无效：\n{新路径}");
+            EventAggregator.PublishLog($"路径不存在或无效：\n{新路径}", LogLevel.Error);
             return;
         }
 
@@ -82,11 +79,11 @@ public partial class QF : UserControl, I工具
             if (!found) lines.Add($"AssetsPath={新路径}");
 
             await File.WriteAllTextAsync(config路径, string.Join(Environment.NewLine, lines) + Environment.NewLine);
-            new 日志($"成功更新 QF_Config.txt 中的 AssetsPath 为：{新路径}");
+            EventAggregator.PublishLog($"成功更新 QF_Config.txt 中的 AssetsPath 为：{新路径}");
         }
         catch (Exception ex)
         {
-            new 报错($"保存配置失败：{ex.Message}");
+            EventAggregator.PublishLog($"保存配置失败：{ex.Message}", LogLevel.Error);
         }
     }
 
@@ -99,5 +96,4 @@ public partial class QF : UserControl, I工具
     {
         ((主窗口)this.Parent!).通用Blender脚本调用(sender, "QF");
     }
-
 }

@@ -1,9 +1,0 @@
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\bin\Release\net10.0-windows\QF.dll
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\QF.csproj.AssemblyReference.cache
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\Avalonia\Resources.Inputs.cache
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\Avalonia\resources
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\QF.GeneratedMSBuildEditorConfig.editorconfig
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\QF.csproj.CoreCompileInputs.cache
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\QF.dll
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\refint\QF.dll
-D:\360MoveData\Users\s\Desktop\ZW_Tool\Packages\QF\obj\Release\net10.0-windows\ref\QF.dll

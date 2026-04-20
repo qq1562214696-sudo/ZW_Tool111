@@ -14,13 +14,13 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
     /// </summary>
     public async Task 规范整理文件夹(string 目标文件夹)
     {
-      new 日志("开始执行文件夹规范整理流程...");
+      EventAggregator.PublishLog("开始执行文件夹规范整理流程...");
 
         try
         {
             if (!Directory.Exists(目标文件夹))
             {
-                new 日志($"无效路径：{目标文件夹}");
+                EventAggregator.PublishLog($"无效路径：{目标文件夹}");
                 return;
             }
 
@@ -35,7 +35,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                 if (提交文件夹数组.Length > 0)
                 {
                     目标文件夹 = 提交文件夹数组[0];
-                  new 日志($"自动切换到提交文件夹：{目标文件夹}");
+                  EventAggregator.PublishLog($"自动切换到提交文件夹：{目标文件夹}");
                     有Assets文件夹 = Directory.Exists(Path.Combine(目标文件夹, "Assets"));
                     有截图文件夹 = Directory.Exists(Path.Combine(目标文件夹, "截图"));
                 }
@@ -43,7 +43,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
 
             if (!有Assets文件夹 || !有截图文件夹)
             {
-                new 日志("文件夹结构不符合规范要求：缺少 Assets 或 截图 文件夹");
+                EventAggregator.PublishLog("文件夹结构不符合规范要求：缺少 Assets 或 截图 文件夹");
                 return;
             }
 
@@ -51,13 +51,13 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
             string? 父目录 = Directory.GetParent(目标文件夹)?.FullName;
             if (string.IsNullOrEmpty(父目录))
             {
-              new 日志("无法获取父目录");
+              EventAggregator.PublishLog("无法获取父目录");
                 return;
             }
 
             // 查找所有 PSD 文件，并提取符合“前缀_数字”格式的命名
             var psd文件列表 = Directory.GetFiles(父目录, "*.psd", SearchOption.AllDirectories);
-            new 日志($"在父目录中找到 {psd文件列表.Length} 个 PSD 文件");
+            EventAggregator.PublishLog($"在父目录中找到 {psd文件列表.Length} 个 PSD 文件");
 
             var 有效命名列表 = new System.Collections.Generic.List<string>();
             foreach (var psd文件 in psd文件列表)
@@ -68,11 +68,11 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                 {
                     string 提取命名 = 匹配结果.Value;
                     有效命名列表.Add(提取命名);
-                    new 日志($"  提取有效命名：{提取命名} （来自 {文件基名}）");
+                    EventAggregator.PublishLog($"  提取有效命名：{提取命名} （来自 {文件基名}）");
                 }
                 else
                 {
-                    new 日志($"  跳过不符合格式：{文件基名}");
+                    EventAggregator.PublishLog($"  跳过不符合格式：{文件基名}");
                 }
             }
 
@@ -80,12 +80,12 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
 
             if (有效命名列表.Count == 0)
             {
-                  new 日志("未找到任何符合 前缀_数字.psd 格式的文件");
+                  EventAggregator.PublishLog("未找到任何符合 前缀_数字.psd 格式的文件");
                 return;
             }
 
-            new 日志($"共提取到 {有效命名列表.Count} 个有效命名：");
-            foreach (var 命名 in 有效命名列表) new 日志("  " + 命名);
+            EventAggregator.PublishLog($"共提取到 {有效命名列表.Count} 个有效命名：");
+            foreach (var 命名 in 有效命名列表) EventAggregator.PublishLog("  " + 命名);
 
             // 将提取的命名列表复制到剪贴板（方便后续粘贴到 Unity 等工具）
             try
@@ -99,15 +99,15 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                     UseShellExecute = false
                 };
                 System.Diagnostics.Process.Start(进程启动信息);
-                new 日志("已成功将所有有效命名复制到剪贴板");
+                EventAggregator.PublishLog("已成功将所有有效命名复制到剪贴板");
             }
             catch (Exception ex)
             {
-                new 日志($"复制到剪贴板失败：{ex.Message}");
+                EventAggregator.PublishLog($"复制到剪贴板失败：{ex.Message}");
             }
 
             // ── 公共贴图提取处理 ───────────────────────────────────────
-          new 日志("开始提取公共贴图到总文件夹...");
+          EventAggregator.PublishLog("开始提取公共贴图到总文件夹...");
 
             string[] 贴图模式 = new[] { "*_A.png", "*_D.png", "*_D.psd" };
 
@@ -136,7 +136,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                 if (模板文件夹列表.Length > 0)
                 {
                     var 第一个模板 = 模板文件夹列表[0];
-                  new 日志($"从模板文件夹提取公共贴图：{Path.GetFileName(第一个模板)}");
+                  EventAggregator.PublishLog($"从模板文件夹提取公共贴图：{Path.GetFileName(第一个模板)}");
 
                     foreach (var 模式 in 贴图模式)
                     {
@@ -147,19 +147,19 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                             if (!File.Exists(目标路径))
                             {
                                 File.Copy(贴图文件, 目标路径, true);
-                              new 日志($"  已提取：{Path.GetFileName(贴图文件)}");
+                              EventAggregator.PublishLog($"  已提取：{Path.GetFileName(贴图文件)}");
                             }
                         }
                     }
                 }
                 else
                 {
-                  new 日志("未找到任何模板文件夹，无法提取公共贴图");
+                  EventAggregator.PublishLog("未找到任何模板文件夹，无法提取公共贴图");
                 }
             }
             else
             {
-              new 日志("公共贴图已完整存在于总文件夹，无需提取");
+              EventAggregator.PublishLog("公共贴图已完整存在于总文件夹，无需提取");
             }
 
             // 收集最终公共贴图路径
@@ -169,7 +169,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
             }
 
             // ── 标记并清理旧模板 ────────────────────────────────────────
-          new 日志("开始标记旧模板并清理重复贴图...");
+          EventAggregator.PublishLog("开始标记旧模板并清理重复贴图...");
 
             var 已标记项目 = new System.Collections.Generic.List<(string 原路径, string 新路径)>();
 
@@ -205,17 +205,17 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                                     foreach (var 贴图 in 模板贴图)
                                     {
                                         File.Delete(贴图);
-                                      new 日志($"  删除模板内重复贴图：{文件夹名}/{Path.GetFileName(贴图)}");
+                                      EventAggregator.PublishLog($"  删除模板内重复贴图：{文件夹名}/{Path.GetFileName(贴图)}");
                                     }
                                 }
 
                                 Directory.Move(子文件夹, 新路径);
                                 已标记项目.Add((子文件夹, 新路径));
-                              new 日志($"已标记为删除：{文件夹名} → {新文件夹名}");
+                              EventAggregator.PublishLog($"已标记为删除：{文件夹名} → {新文件夹名}");
                             }
                             catch (Exception ex)
                             {
-                              new 日志($"标记失败：{文件夹名} - {ex.Message}");
+                              EventAggregator.PublishLog($"标记失败：{文件夹名} - {ex.Message}");
                             }
                         }
                     }
@@ -223,7 +223,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
             }
 
             // ── 根据 PSD 命名批量创建规范文件夹 ──────────────────────────
-          new 日志("开始按命名批量创建规范文件夹...");
+          EventAggregator.PublishLog("开始按命名批量创建规范文件夹...");
 
             var 已标记模板 = Directory.GetDirectories(目标文件夹)
                 .Where(d => Path.GetFileName(d).EndsWith("_删", StringComparison.OrdinalIgnoreCase))
@@ -236,7 +236,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                 var 命名匹配 = Regex.Match(文件命名, "^(.+?)_(.+)$");
                 if (!命名匹配.Success)
                 {
-                  new 日志($"命名格式异常：{文件命名}");
+                  EventAggregator.PublishLog($"命名格式异常：{文件命名}");
                     失败数量++;
                     continue;
                 }
@@ -278,7 +278,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                 }
                 else
                 {
-                  new 日志($"未找到匹配模板：{文件命名}");
+                  EventAggregator.PublishLog($"未找到匹配模板：{文件命名}");
                     失败数量++;
                     continue;
                 }
@@ -296,7 +296,7 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                             Directory.Delete(目标路径, true);
 
                         Directory.CreateDirectory(目标路径);
-                      new 日志($"成功创建文件夹：{新文件夹名}");
+                      EventAggregator.PublishLog($"成功创建文件夹：{新文件夹名}");
 
                         // 复制 .max 文件并重命名
                         var max文件 = Directory.GetFiles(来源路径, "*.max", SearchOption.TopDirectoryOnly).FirstOrDefault();
@@ -304,11 +304,11 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                         {
                             string 新Max文件名 = 文件命名 + ".max";
                             File.Copy(max文件, Path.Combine(目标路径, 新Max文件名), true);
-                          new 日志($"  已复制 .max 文件：{新Max文件名}");
+                          EventAggregator.PublishLog($"  已复制 .max 文件：{新Max文件名}");
                         }
                         else
                         {
-                          new 日志("  警告：未在模板中找到 .max 文件");
+                          EventAggregator.PublishLog("  警告：未在模板中找到 .max 文件");
                         }
 
                         // 复制公共贴图，并按规范重命名
@@ -322,11 +322,11 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                                 string 后缀 = m2.Value;
                                 string 新贴图名 = 文件命名 + 后缀 + 扩展名;
                                 File.Copy(贴图文件, Path.Combine(目标路径, 新贴图名), true);
-                              new 日志($"  已复制贴图：{新贴图名}");
+                              EventAggregator.PublishLog($"  已复制贴图：{新贴图名}");
                             }
                             else
                             {
-                              new 日志($"  跳过非标准贴图：{Path.GetFileName(贴图文件)}");
+                              EventAggregator.PublishLog($"  跳过非标准贴图：{Path.GetFileName(贴图文件)}");
                             }
                         }
 
@@ -334,14 +334,14 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                     }
                     catch (Exception ex)
                     {
-                      new 日志($"创建文件夹失败：{新文件夹名} - {ex.Message}");
+                      EventAggregator.PublishLog($"创建文件夹失败：{新文件夹名} - {ex.Message}");
                         失败数量++;
                     }
                 }
             }
 
             // ── 最终清理阶段 ─────────────────────────────────────────────
-          new 日志("开始清理原模板和公共贴图...");
+          EventAggregator.PublishLog("开始清理原模板和公共贴图...");
 
             foreach (var 项目 in 已标记项目)
             {
@@ -349,29 +349,29 @@ public partial class 主窗口//Main区块，暂时存放着QF文件整理逻辑
                 {
                     if (Directory.Exists(项目.新路径))
                         Directory.Delete(项目.新路径, true);
-                  new 日志($"已彻底删除模板：{Path.GetFileName(项目.新路径)}");
+                  EventAggregator.PublishLog($"已彻底删除模板：{Path.GetFileName(项目.新路径)}");
                 }
                 catch { /* 忽略无法删除的情况 */ }
             }
 
-          new 日志("正在删除总文件夹中的原始公共贴图...");
+          EventAggregator.PublishLog("正在删除总文件夹中的原始公共贴图...");
             foreach (var 贴图 in 公共贴图列表)
             {
                 try
                 {
                     if (File.Exists(贴图))
                         File.Delete(贴图);
-                  new 日志($"已删除原始公共贴图：{Path.GetFileName(贴图)}");
+                  EventAggregator.PublishLog($"已删除原始公共贴图：{Path.GetFileName(贴图)}");
                 }
                 catch { }
             }
 
-          new 日志($"规范整理完成：成功 {成功数量} 个，失败 {失败数量} 个");
-          new 日志("整个文件夹规范整理流程已结束");
+          EventAggregator.PublishLog($"规范整理完成：成功 {成功数量} 个，失败 {失败数量} 个");
+          EventAggregator.PublishLog("整个文件夹规范整理流程已结束");
         }
         catch (Exception ex)
         {
-          new 日志($"处理过程中发生严重异常：{ex.Message}");
+          EventAggregator.PublishLog($"处理过程中发生严重异常：{ex.Message}");
         }
     }
 }

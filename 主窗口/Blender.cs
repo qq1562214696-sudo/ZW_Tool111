@@ -18,7 +18,7 @@ namespace ZW_Tool.核心
         {
             if (!File.Exists(py路径))
             {
-                new 报错($"找不到 Blender 脚本：{py路径}");
+                EventAggregator.PublishLog($"找不到 Blender 脚本：{py路径}");
                 return;
             }
 
@@ -26,7 +26,7 @@ namespace ZW_Tool.核心
             var existingBlender = System.Diagnostics.Process.GetProcessesByName("blender");
             if (existingBlender.Length == 0)
             {
-                new 报错("Blender 当前未运行！\n请先打开 Blender 并确保 ZW_Tool Remote Control 已启动。");
+                EventAggregator.PublishLog("Blender 当前未运行！\n请先打开 Blender 并确保 ZW_Tool Remote Control 已启动。");
                 return;
             }
 
@@ -43,11 +43,11 @@ namespace ZW_Tool.核心
                 await stream.WriteAsync(data);
                 await stream.FlushAsync();
 
-                new 日志($"[Blender] 已发送到运行中的实例：{Path.GetFileName(py路径)} ({data.Length} 字节)");
+                EventAggregator.PublishLog($"[Blender] 已发送到运行中的实例：{Path.GetFileName(py路径)} ({data.Length} 字节)");
             }
             catch (Exception ex)
             {
-                new 报错($"Blender TCP 连接失败: {ex.Message}\n请确认 Blender 中 ZW_Tool Remote Control 已在运行");
+                EventAggregator.PublishLog($"Blender TCP 连接失败: {ex.Message}\n请确认 Blender 中 ZW_Tool Remote Control 已在运行");
             }
         }
 
@@ -61,7 +61,7 @@ namespace ZW_Tool.核心
             string 按钮文本 = UI.UI方法.获取内容文本(sender);
             if (string.IsNullOrWhiteSpace(按钮文本))
             {
-                new 报错("按钮文本为空，无法确定脚本名称");
+                EventAggregator.PublishLog("按钮文本为空，无法确定脚本名称");
                 return;
             }
 
@@ -86,7 +86,7 @@ namespace ZW_Tool.核心
             string 按钮文本 = UI.UI方法.获取内容文本(sender);
             if (string.IsNullOrWhiteSpace(按钮文本))
             {
-                new 报错("按钮文本为空，无法确定脚本名称");
+                EventAggregator.PublishLog("按钮文本为空，无法确定脚本名称");
                 return;
             }
             
@@ -97,7 +97,7 @@ namespace ZW_Tool.核心
         // ====================== 测试按钮（可选） ======================
         public void Blender测试按钮_Click(object? sender, RoutedEventArgs e)
         {
-            new 日志("=== 启动 Blender 测试 ===");
+            EventAggregator.PublishLog("=== 启动 Blender 测试 ===");
             string 脚本路径 = GetScriptPath("Blender", "", "测试", ".py");
 
             _ = 发送脚本到Blender(脚本路径);

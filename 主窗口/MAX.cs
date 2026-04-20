@@ -13,7 +13,7 @@ public partial class 主窗口//Max区块
     {
         if (!File.Exists(脚本路径))
         {
-          new 报错($"找不到脚本：{脚本路径}");
+          EventAggregator.PublishLog($"找不到脚本：{脚本路径}");
             return;
         }
         // 尝试多种可能的窗口类名/标题来定位 3ds Max 主窗口
@@ -25,7 +25,7 @@ public partial class 主窗口//Max区块
         // if (窗口句柄 == IntPtr.Zero) 窗口句柄 = FindWindow(null, "Autodesk 3ds Max 2014"); // 可根据版本增加更多
         if (窗口句柄 == IntPtr.Zero)
         {
-          new 报错("Max2014 未正确运行");
+          EventAggregator.PublishLog("Max2014 未正确运行");
             return;
         }
         try
@@ -35,7 +35,7 @@ public partial class 主窗口//Max区块
             // 获取窗口矩形区域，用于计算中心点坐标
             if (!GetWindowRect(窗口句柄, out RECT 矩形区域))
             {
-              new 报错("获取 3ds Max 窗口失败");
+              EventAggregator.PublishLog("获取 3ds Max 窗口失败");
                 return;
             }
             int 中心X = 矩形区域.Left + (矩形区域.Right - 矩形区域.Left) / 2;
@@ -50,7 +50,7 @@ public partial class 主窗口//Max区块
             IntPtr 全局内存句柄 = Marshal.AllocHGlobal(总内存大小);
             if (全局内存句柄 == IntPtr.Zero)
             {
-              new 报错("全局内存分配失败");
+              EventAggregator.PublishLog("全局内存分配失败");
                 return;
             }
             // 注意：这里移除了 finally 中的 FreeHGlobal，让 3ds Max 负责释放内存
@@ -72,13 +72,13 @@ public partial class 主窗口//Max区块
             }
             catch (Exception ex)
             {
-              new 报错($"发送Max脚本发生异常：{ex.Message}");
+              EventAggregator.PublishLog($"发送Max脚本发生异常：{ex.Message}");
                 Marshal.FreeHGlobal(全局内存句柄); // 异常情况下，手动释放以防泄漏
             }
         }
         catch (Exception ex)
         {
-          new 报错($"与 3ds Max 交互时发生异常：{ex.Message}");
+          EventAggregator.PublishLog($"与 3ds Max 交互时发生异常：{ex.Message}");
         }
     }
     
@@ -91,7 +91,7 @@ public partial class 主窗口//Max区块
         string 按钮文本 = UI.UI方法.获取内容文本(sender);
         if (string.IsNullOrWhiteSpace(按钮文本))
         {
-            new 报错("按钮文本为空，无法确定脚本名称");
+            EventAggregator.PublishLog("按钮文本为空，无法确定脚本名称");
             return;
         }
         

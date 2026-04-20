@@ -34,7 +34,7 @@ public partial class 主窗口//交互区块
 
         if (文件列表 == null || !文件列表.Any())
         {
-          new 日志("未检测到任何文件/文件夹");
+          EventAggregator.PublishLog("未检测到任何文件/文件夹");
             return;
         }
         var 第一个项目 = 文件列表.First();
@@ -42,15 +42,15 @@ public partial class 主窗口//交互区块
         var 路径 = 第一个项目?.TryGetLocalPath(); 
         if (string.IsNullOrEmpty(路径))
         {
-          new 日志("无法获取本地路径");
+          EventAggregator.PublishLog("无法获取本地路径");
             return;
         }
         if (!Directory.Exists(路径))
         {
-          new 日志($"拖入的不是文件夹：{路径}");
+          EventAggregator.PublishLog($"拖入的不是文件夹：{路径}");
             return;
         }
-      new 日志($"成功接收文件夹：{路径}");
+      EventAggregator.PublishLog($"成功接收文件夹：{路径}");
         var 路径文本框 = this.FindControl<TextBox>("FolderPathTextBox");
         if (路径文本框 != null)
             路径文本框.Text = 路径;
